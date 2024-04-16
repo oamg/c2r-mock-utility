@@ -8,14 +8,13 @@ License:    GPLv3+
 BuildArch:  noarch
 BuildRequires:  python2
 Requires:       python2
-URL:        https://gitlab.cee.redhat.com/oamg/c2r-test-mock
-Source0:    https://gitlab.cee.redhat.com/oamg/c2r-test-mock/release/%{name}-%{version}.tar.gz
+URL:        https://github.com/oamg/c2r-mock-utility
+Source0:    https://github.com/oamg/c2r-mock-utility/release/%{name}-%{version}.tar.gz
 
 %description
-Only for testing purposes
+# Only for testing purposes
 
 %prep
-ls
 %setup -q
 
 %build
@@ -39,5 +38,5 @@ chmod 755 %{buildroot}%{_bindir}/%{name}
 %{_datadir}/%{name}/
 
 %changelog
-* Mon Apr 15 2024 Martin Litwora <mlitwora@redhat.com>
+* Mon Apr 16 2024 Martin Litwora <mlitwora@redhat.com>
 - First initial build (huzzahh!)
