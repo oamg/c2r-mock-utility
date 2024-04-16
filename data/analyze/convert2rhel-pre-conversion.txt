@@ -1,0 +1,14 @@
+(INFO) REMOVE_REPOSITORY_FILES_PACKAGES::REPOSITORY_FILE_PACKAGES_REMOVED - Repository file packages to be removed
+Description: We have identified installed packages that match a pre-defined list of packages that are to be removed during the conversion
+Diagnosis: The following packages will be removed during the conversion: centos-release-7-9.2009.1.el7.centos.x86_64
+Remediations: N/A
+
+(INFO) REMOVE_EXCLUDED_PACKAGES::EXCLUDED_PACKAGES_REMOVED - Excluded packages to be removed
+Description: We have identified installed packages that match a pre-defined list of packages that are to be removed during the conversion
+Diagnosis: The following packages will be removed during the conversion: geoipupdate-2.5.0-2.el7.x86_64
+Remediations: N/A
+
+(INFO) DBUS_IS_RUNNING::DBUS_IS_RUNNING_CHECK_SKIP - Did not perform the dbus is running check
+Description: Did not perform the check because we have been asked not to subscribe this system to RHSM.
+Diagnosis: N/A
+Remediations: N/A
