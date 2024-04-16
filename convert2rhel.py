@@ -7,7 +7,7 @@ DUMP_ENV_VARS = "/tmp/c2r_mock_dump_env_vars"
 MOCK_OUTPUT_FILE = "/tmp/c2r_mock_test.out"
 SCRIPT_MODE = os.environ.get("SCRIPT_MODE", None)
 
-ANALYZE_NO_ISSUE_FILE_URL = "/usr/share/convert2rhel/data/convert2rhel-pre-conversion.json"
+ANALYZE_NO_ISSUE_FILE_URL = "/usr/share/convert2rhel/data/analyze/convert2rhel-pre-conversion.json"
 C2R_LOG_FOLDER = "/var/log/convert2rhel"
 C2R_PRE_CONVERSION_JSON_LOG_LOCATION = C2R_LOG_FOLDER + "/convert2rhel-pre-conversion.json"
 
@@ -25,7 +25,7 @@ def create_successful_report():
     """
     create_log_folder()
     if SCRIPT_MODE == "ANALYSIS":
-        cmd = ["copy", ANALYZE_NO_ISSUE_FILE_URL, C2R_PRE_CONVERSION_JSON_LOG_LOCATION]
+        cmd = ["cp", ANALYZE_NO_ISSUE_FILE_URL, C2R_PRE_CONVERSION_JSON_LOG_LOCATION]
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
         output = ""
         for line in iter(process.stdout.readline, b""):

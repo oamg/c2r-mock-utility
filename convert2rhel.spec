@@ -25,7 +25,7 @@ rm -rf %{buildroot}%{python_sitelib}/data
 
 # Create the /usr/share/convert2rhel/ directory for storing data files
 install -d %{buildroot}%{_datadir}/%{name}/
-cp -a data/. \
+cp -ra data/ \
     %{buildroot}%{_datadir}/%{name}
 
 install -m 755 -d %{buildroot}%{_bindir}/
