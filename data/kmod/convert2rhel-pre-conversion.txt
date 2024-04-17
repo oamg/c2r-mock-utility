@@ -1,0 +1,29 @@
+(OVERRIDABLE) ENSURE_KERNEL_MODULES_COMPATIBILITY::UNSUPPORTED_KERNEL_MODULES - Unsupported kernel modules
+Description: Unsupported kernel modules were found
+Diagnosis: The following loaded kernel modules are not available in RHEL:
+/lib/modules/3.10.0-1160.114.2.el7.x86_64/kernel/drivers/net/bonding/custom_module_location/bonding.ko.xz
+
+Remediations: Ensure you have updated the kernel to the latest available version and rebooted the system.
+If this message persists, you can prevent the modules from loading by following https://access.redhat.com/solutions/41278 and rerun convert2rhel.
+Keeping them loaded could cause the system to malfunction after the conversion as they might not work properly with the RHEL kernel.
+To circumvent this check and accept the risk you can set environment variable 'CONVERT2RHEL_ALLOW_UNAVAILABLE_KMODS=1'.
+
+(SKIP) VALIDATE_PACKAGE_MANAGER_TRANSACTION::SKIP - Skipped action
+Description: This action was skipped due to another action failing.
+Diagnosis: Skipped because ENSURE_KERNEL_MODULES_COMPATIBILITY was not successful
+Remediations: Please ensure that the ENSURE_KERNEL_MODULES_COMPATIBILITY check passes so that this Action can evaluate your system
+
+(INFO) REMOVE_REPOSITORY_FILES_PACKAGES::REPOSITORY_FILE_PACKAGES_REMOVED - Repository file packages to be removed
+Description: We have identified installed packages that match a pre-defined list of packages that are to be removed during the conversion
+Diagnosis: The following packages will be removed during the conversion: centos-release-7-9.2009.1.el7.centos.x86_64
+Remediations: N/A
+
+(INFO) REMOVE_EXCLUDED_PACKAGES::EXCLUDED_PACKAGES_REMOVED - Excluded packages to be removed
+Description: We have identified installed packages that match a pre-defined list of packages that are to be removed during the conversion
+Diagnosis: The following packages will be removed during the conversion: geoipupdate-2.5.0-2.el7.x86_64
+Remediations: N/A
+
+(INFO) DBUS_IS_RUNNING::DBUS_IS_RUNNING_CHECK_SKIP - Did not perform the dbus is running check
+Description: Did not perform the check because we have been asked not to subscribe this system to RHSM.
+Diagnosis: N/A
+Remediations: N/A

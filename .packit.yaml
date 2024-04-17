@@ -18,7 +18,7 @@ downstream_package_name: convert2rhel
 jobs:
   # Build for pull request push
   - job: copr_build
-    owner: "@oamg"
+    owner: "mlitwora-redhat"
     project: c2r-mock-utility
     trigger: pull_request
     targets:
@@ -29,7 +29,7 @@ jobs:
       - grep -oP '^Version:\s+\K\S+' convert2rhel.spec
   # Build for merge to devel
   - job: copr_build
-    owner: "@oamg"
+    owner: "mlitwora-redhat"
     project: c2r-mock-utility
     trigger: commit
     branch: main
