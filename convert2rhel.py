@@ -1,4 +1,5 @@
 #!/usr/bin/python2
+import json
 import os
 import subprocess
 import sys
@@ -10,7 +11,7 @@ MOCK_INFINITE_LOOP = "/tmp/c2r_mock_infinite_loop"
 MOCK_KMOD_INHIBITOR = "/tmp/c2r_mock_kmod_inhibitor"
 
 # The output of a mock to check the test result
-MOCK_OUTPUT_FILE = "/tmp/c2r_mock_test.out"
+MOCK_OUTPUT_FILE = "/tmp/c2r_mock_test.json"
 
 # Script mode as defined in the script
 # (https://github.com/oamg/convert2rhel-insights-tasks/blob/main/scripts/c2r_script.py#L15)
@@ -61,7 +62,7 @@ def main():
     # This serves as a communication with a running test.
     if os.path.isfile(MOCK_DUMP_ENV_VARS):
         with open(MOCK_OUTPUT_FILE, mode="w") as f:
-            f.write(str(os.environ) + "\n")
+            json.dump(dict(os.environ), f)
 
         output, rc = create_report(ANALYZE_NO_ISSUE_FILE)
         if rc != 0:
