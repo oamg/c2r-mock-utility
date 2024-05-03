@@ -6,9 +6,11 @@ import sys
 import time
 
 # Based on the existence of the following files do a certain thing
-MOCK_DUMP_ENV_VARS = "/tmp/c2r_mock_dump_env_vars"
-MOCK_INFINITE_LOOP = "/tmp/c2r_mock_infinite_loop"
-MOCK_KMOD_INHIBITOR = "/tmp/c2r_mock_kmod_inhibitor"
+MOCK_DUMP_ENV_VARS = "/tmp/c2r_mock_dump_env_vars"  # Dump env vars
+MOCK_INFINITE_LOOP = "/tmp/c2r_mock_infinite_loop"  # Infinitely loop
+MOCK_KMOD_INHIBITOR = "/tmp/c2r_mock_kmod_inhibitor"  # Report an inhibitor about unsupported kernel modules
+MOCK_EXECUTE_SCRIPT = "/tmp/c2r_mock_execute_script"  # Do whatever is inside this script file
+
 
 # The output of a mock to check the test result
 MOCK_OUTPUT_FILE = "/tmp/c2r_mock_test.json"
@@ -81,6 +83,28 @@ def main():
             print(output)
         if SCRIPT_MODE == "CONVERSION":
             script_es = 1
+
+    elif os.path.isfile(MOCK_EXECUTE_SCRIPT):
+        # Check if file is executable
+        cmd = [f"[[ -x {MOCK_EXECUTE_SCRIPT} ]]"]
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
+        process.wait()
+
+        if process.returncode != 0:
+            print("The script is not executable, make it executable to run!")
+            sys.exit(10)
+
+        # Execute the MOCK_EXECUTE_SCRIPT file path
+        process = subprocess.Popen(MOCK_EXECUTE_SCRIPT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
+        # Wait for the process to end
+        process.wait()
+
+        # If the script finishes successfully create a report
+        if process.returncode == 0:
+            create_report(ANALYZE_NO_ISSUE_FILE)
+
+        # Exit with the executed script return code
+        script_es = process.returncode
 
     else:
         print(
