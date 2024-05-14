@@ -86,14 +86,13 @@ def main():
 
     elif os.path.isfile(MOCK_EXECUTE_SCRIPT):
         # Check if file is executable
-        # FIXME: the following commented out doesnt work
-        # cmd = ["[[ -x {} ]]".format(MOCK_EXECUTE_SCRIPT)]
-        # process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
-        # process.wait()
+        cmd = ["[", "-x", MOCK_EXECUTE_SCRIPT, "]"]
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
+        process.wait()
 
-        # if process.returncode != 0:
-        #    print("The script is not executable, make it executable to run!")
-        #    sys.exit(10)
+        if process.returncode != 0:
+            print("The script is not executable, make it executable to run!")
+            sys.exit(10)
 
         # Execute the MOCK_EXECUTE_SCRIPT file path
         process = subprocess.Popen(MOCK_EXECUTE_SCRIPT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
