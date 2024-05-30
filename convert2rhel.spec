@@ -38,5 +38,7 @@ chmod 755 %{buildroot}%{_bindir}/%{name}
 %{_datadir}/%{name}/
 
 %changelog
+* Thu May 30 2024 Martin Litwora <mlitwora@redhat.com>
+- Second build
 * Mon Apr 16 2024 Martin Litwora <mlitwora@redhat.com>
 - First initial build (huzzahh!)
