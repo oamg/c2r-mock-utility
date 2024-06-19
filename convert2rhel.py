@@ -10,6 +10,7 @@ MOCK_DUMP_ENV_VARS = "/tmp/c2r_mock_dump_env_vars"  # Dump env vars
 MOCK_INFINITE_LOOP = "/tmp/c2r_mock_infinite_loop"  # Infinitely loop
 MOCK_KMOD_INHIBITOR = "/tmp/c2r_mock_kmod_inhibitor"  # Report an inhibitor about unsupported kernel modules
 MOCK_EXECUTE_SCRIPT = "/tmp/c2r_mock_execute_script"  # Do whatever is inside this script file
+MOCK_DO_NOTHING = "/tmp/c2r_mock_do_nothing"  # Do nothing, just create a report and end immediately
 
 
 # The output of a mock to check the test result
@@ -22,8 +23,10 @@ SCRIPT_MODE = os.environ.get("SCRIPT_MODE", None)
 # Report json files as expected by script
 ANALYZE_NO_ISSUE_FILE = "/usr/share/convert2rhel/data/analyze/convert2rhel-pre-conversion.json"
 ANALYZE_KMOD_INHIBITOR_FILE = "/usr/share/convert2rhel/data/kmod/convert2rhel-pre-conversion.json"
+CONVERT_NO_ISSUE_FILE = "/usr/share/convert2rhel/data/convert/convert2rhel-post-conversion.json"
 C2R_LOG_FOLDER = "/var/log/convert2rhel"
 C2R_ANALYZE_JSON_LOG_LOCATION = C2R_LOG_FOLDER + "/convert2rhel-pre-conversion.json"
+C2R_CONVERT_JSON_LOG_LOCATION = C2R_LOG_FOLDER + "/convert2rhel-post-conversion.json"
 
 
 def create_log_folder():
@@ -32,13 +35,13 @@ def create_log_folder():
         os.makedirs(C2R_LOG_FOLDER)
 
 
-def create_report(reportfile):
+def create_report(reportfile, log_destination_location):
     """
     Download and put the c2r report file in the log directory
     where the rhc-worker-script parse the result of the c2r run
     """
     create_log_folder()
-    cmd = ["cp", reportfile, C2R_ANALYZE_JSON_LOG_LOCATION]
+    cmd = ["cp", reportfile, log_destination_location]
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
     output = ""
     for line in iter(process.stdout.readline, b""):
@@ -48,7 +51,9 @@ def create_report(reportfile):
     # Wait for the process to end
     process.wait()
 
-    return output, process.returncode
+    if process.returncode != 0:
+        print(output)
+        raise RuntimeError("Mock failed to create a report")
 
 
 def main():
@@ -66,9 +71,10 @@ def main():
         with open(MOCK_OUTPUT_FILE, mode="w") as f:
             json.dump(dict(os.environ), f)
 
-        output, rc = create_report(ANALYZE_NO_ISSUE_FILE)
-        if rc != 0:
-            print(output)
+        if SCRIPT_MODE == "ANALYSIS":
+            create_report(ANALYZE_NO_ISSUE_FILE, C2R_ANALYZE_JSON_LOG_LOCATION)
+        else:
+            create_report(CONVERT_NO_ISSUE_FILE, C2R_CONVERT_JSON_LOG_LOCATION)
 
     elif os.path.isfile(MOCK_INFINITE_LOOP):
         while True:
@@ -78,9 +84,8 @@ def main():
                 f.write(time.ctime() + "\n")
 
     elif os.path.isfile(MOCK_KMOD_INHIBITOR):
-        output, rc = create_report(ANALYZE_KMOD_INHIBITOR_FILE)
-        if rc != 0:
-            print(output)
+        create_report(ANALYZE_KMOD_INHIBITOR_FILE, C2R_ANALYZE_JSON_LOG_LOCATION)
+
         if SCRIPT_MODE == "CONVERSION":
             script_es = 1
 
@@ -101,10 +106,19 @@ def main():
 
         # If the script finishes successfully create a report
         if process.returncode == 0:
-            create_report(ANALYZE_NO_ISSUE_FILE)
+            if SCRIPT_MODE == "ANALYSIS":
+                create_report(ANALYZE_NO_ISSUE_FILE, C2R_ANALYZE_JSON_LOG_LOCATION)
+            else:
+                create_report(CONVERT_NO_ISSUE_FILE, C2R_CONVERT_JSON_LOG_LOCATION)
 
         # Exit with the executed script return code
         script_es = process.returncode
+
+    elif os.path.isfile(MOCK_DO_NOTHING):
+        if SCRIPT_MODE == "ANALYSIS":
+            create_report(ANALYZE_NO_ISSUE_FILE, C2R_ANALYZE_JSON_LOG_LOCATION)
+        else:
+            create_report(CONVERT_NO_ISSUE_FILE, C2R_CONVERT_JSON_LOG_LOCATION)
 
     else:
         print(
