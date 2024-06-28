@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import time
+import argparse
 
 # Based on the existence of the following files do a certain thing
 MOCK_DUMP_ENV_VARS = "/tmp/c2r_mock_dump_env_vars"  # Dump env vars
@@ -21,12 +22,25 @@ MOCK_OUTPUT_FILE = "/tmp/c2r_mock_test.json"
 SCRIPT_MODE = os.environ.get("SCRIPT_MODE", None)
 
 # Report json files as expected by script
-ANALYZE_NO_ISSUE_FILE = "/usr/share/convert2rhel/data/analyze/convert2rhel-pre-conversion.json"
-ANALYZE_KMOD_INHIBITOR_FILE = "/usr/share/convert2rhel/data/kmod/convert2rhel-pre-conversion.json"
-CONVERT_NO_ISSUE_FILE = "/usr/share/convert2rhel/data/convert/convert2rhel-post-conversion.json"
+BASE_REPORT_DATA_FOLDER = "/usr/share/convert2rhel/data/"
+ANALYZE_NO_ISSUE_FILE = BASE_REPORT_DATA_FOLDER + "analyze/convert2rhel-pre-conversion.json"
+ANALYZE_KMOD_INHIBITOR_FILE = BASE_REPORT_DATA_FOLDER + "kmod/convert2rhel-pre-conversion.json"
+CONVERT_NO_ISSUE_FILE = BASE_REPORT_DATA_FOLDER + "convert/convert2rhel-post-conversion.json"
 C2R_LOG_FOLDER = "/var/log/convert2rhel"
 C2R_ANALYZE_JSON_LOG_LOCATION = C2R_LOG_FOLDER + "/convert2rhel-pre-conversion.json"
 C2R_CONVERT_JSON_LOG_LOCATION = C2R_LOG_FOLDER + "/convert2rhel-post-conversion.json"
+
+REPORT_STATUS_ORDER = ["INFO", "SKIP", "OVERRIDABLE", "WARNING", "ERROR"]
+
+
+def parse_arguments(args):
+    parser = argparse.ArgumentParser()
+
+    # Add allowed options
+    parser.add_argument("--els")
+
+    # Parse arguments
+    return parser.parse_args(args)
 
 
 def create_log_folder():
@@ -35,46 +49,82 @@ def create_log_folder():
         os.makedirs(C2R_LOG_FOLDER)
 
 
-def create_report(reportfile, log_destination_location):
+def create_report(reportfile: dict, log_destination_location):
     """
     Download and put the c2r report file in the log directory
     where the rhc-worker-script parse the result of the c2r run
     """
     create_log_folder()
-    cmd = ["cp", reportfile, log_destination_location]
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
-    output = ""
-    for line in iter(process.stdout.readline, b""):
-        line = line.decode("utf8")
-        output += line
-
-    # Wait for the process to end
-    process.wait()
-
-    if process.returncode != 0:
-        print(output)
+    try:
+        with open(log_destination_location, "w") as f:
+            f.write(json.dumps(reportfile))
+    except:
         raise RuntimeError("Mock failed to create a report")
+
+
+'''
+    Crafts a report adding all entries from :path_issues to the
+    base reportfile located in :reportfile_path
+
+    :param reportfile_path: Path to the base reportfile
+    :param path_issues: Dict with the paths to the reportfiles to add
+                        Dict has to be str -> str.
+'''
+def craft_report(reportfile_path: str, report_issues: dict) -> dict:
+    BASE_REPORT_CRAFT_FOLDER = BASE_REPORT_DATA_FOLDER + "craft/"
+
+    reportfile: dict = {}
+
+    # Get the base reportfile
+    with open(reportfile_path, mode="r") as f:
+        reportfile = json.load(f)
+
+    # Push all report_issues into base reportfile
+    for report_issue in report_issues.values():
+        REPORT_CRAFT_FOLDER = BASE_REPORT_CRAFT_FOLDER + report_issue
+
+        with open(REPORT_CRAFT_FOLDER + ".json", mode="r") as f:
+            json_issue = json.load(f)
+
+        if REPORT_STATUS_ORDER.index(json_issue["status"]) > REPORT_STATUS_ORDER.index(reportfile["status"]):
+            reportfile["status"] = json_issue["status"]
+
+        for action_key in json_issue["actions"].keys():
+            reportfile["actions"][action_key] = json_issue["actions"][action_key]
+
+    return reportfile
 
 
 def main():
     """Main script logic"""
 
-    script_es = 0
+    script_es: int = 0
+    reportfile_path: str = ""
+    log_destination_location: str = ""
+    report_issues: dict = {}
 
     if SCRIPT_MODE not in ("ANALYSIS", "CONVERSION"):
         print("SCRIPT_MODE envar is not one of the expected, got: {}".format(SCRIPT_MODE))
         sys.exit(10)
+
+    # Set defaults
+    if SCRIPT_MODE == "ANALYSIS":
+        reportfile_path = ANALYZE_NO_ISSUE_FILE
+        log_destination_location = C2R_ANALYZE_JSON_LOG_LOCATION
+    else:
+        reportfile_path = CONVERT_NO_ISSUE_FILE
+        log_destination_location = C2R_CONVERT_JSON_LOG_LOCATION
+
+    # Parse arguments
+    parsed_opts = parse_arguments(sys.argv[1:])
+    if not parsed_opts.els:
+        report_issues["els"] = "els" 
 
     # Decide what to do based on existence of a specific file.
     # This serves as a communication with a running test.
     if os.path.isfile(MOCK_DUMP_ENV_VARS):
         with open(MOCK_OUTPUT_FILE, mode="w") as f:
             json.dump(dict(os.environ), f)
-
-        if SCRIPT_MODE == "ANALYSIS":
-            create_report(ANALYZE_NO_ISSUE_FILE, C2R_ANALYZE_JSON_LOG_LOCATION)
-        else:
-            create_report(CONVERT_NO_ISSUE_FILE, C2R_CONVERT_JSON_LOG_LOCATION)
 
     elif os.path.isfile(MOCK_INFINITE_LOOP):
         while True:
@@ -84,7 +134,7 @@ def main():
                 f.write(time.ctime() + "\n")
 
     elif os.path.isfile(MOCK_KMOD_INHIBITOR):
-        create_report(ANALYZE_KMOD_INHIBITOR_FILE, C2R_ANALYZE_JSON_LOG_LOCATION)
+        report_issues["KMOD"] = "kmod"
 
         if SCRIPT_MODE == "CONVERSION":
             script_es = 1
@@ -104,21 +154,11 @@ def main():
         # Wait for the process to end
         process.wait()
 
-        # If the script finishes successfully create a report
-        if process.returncode == 0:
-            if SCRIPT_MODE == "ANALYSIS":
-                create_report(ANALYZE_NO_ISSUE_FILE, C2R_ANALYZE_JSON_LOG_LOCATION)
-            else:
-                create_report(CONVERT_NO_ISSUE_FILE, C2R_CONVERT_JSON_LOG_LOCATION)
-
         # Exit with the executed script return code
         script_es = process.returncode
 
     elif os.path.isfile(MOCK_DO_NOTHING):
-        if SCRIPT_MODE == "ANALYSIS":
-            create_report(ANALYZE_NO_ISSUE_FILE, C2R_ANALYZE_JSON_LOG_LOCATION)
-        else:
-            create_report(CONVERT_NO_ISSUE_FILE, C2R_CONVERT_JSON_LOG_LOCATION)
+        pass
 
     else:
         print(
@@ -126,6 +166,9 @@ def main():
              create one of the specific files to tell it what to do."
         )
         sys.exit(10)
+
+    reportfile = craft_report(reportfile_path, report_issues)
+    create_report(reportfile, log_destination_location)
 
     sys.exit(script_es)
 
