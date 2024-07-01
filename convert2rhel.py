@@ -30,14 +30,21 @@ C2R_LOG_FOLDER = "/var/log/convert2rhel"
 C2R_ANALYZE_JSON_LOG_LOCATION = C2R_LOG_FOLDER + "/convert2rhel-pre-conversion.json"
 C2R_CONVERT_JSON_LOG_LOCATION = C2R_LOG_FOLDER + "/convert2rhel-post-conversion.json"
 
-REPORT_STATUS_ORDER = ["INFO", "SKIP", "OVERRIDABLE", "WARNING", "ERROR"]
+REPORT_STATUS_ORDER = ["SUCCESS", "INFO", "SKIP", "OVERRIDABLE", "WARNING", "ERROR"]
 
 
 def parse_arguments(args):
     parser = argparse.ArgumentParser()
 
     # Add allowed options
-    parser.add_argument("--els")
+    parser.add_argument(
+        "-y",
+        action='store_true'
+    )
+    parser.add_argument(
+        "--els",
+        action='store_true'
+    )
 
     # Parse arguments
     return parser.parse_args(args)
@@ -49,7 +56,7 @@ def create_log_folder():
         os.makedirs(C2R_LOG_FOLDER)
 
 
-def create_report(reportfile: dict, log_destination_location):
+def create_report(reportfile, log_destination_location):
     """
     Download and put the c2r report file in the log directory
     where the rhc-worker-script parse the result of the c2r run
@@ -70,10 +77,10 @@ def create_report(reportfile: dict, log_destination_location):
     :param path_issues: Dict with the paths to the reportfiles to add
                         Dict has to be str -> str.
 '''
-def craft_report(reportfile_path: str, report_issues: dict) -> dict:
+def craft_report(reportfile_path, report_issues):
     BASE_REPORT_CRAFT_FOLDER = BASE_REPORT_DATA_FOLDER + "craft/"
 
-    reportfile: dict = {}
+    reportfile = {}
 
     # Get the base reportfile
     with open(reportfile_path, mode="r") as f:
@@ -98,10 +105,10 @@ def craft_report(reportfile_path: str, report_issues: dict) -> dict:
 def main():
     """Main script logic"""
 
-    script_es: int = 0
-    reportfile_path: str = ""
-    log_destination_location: str = ""
-    report_issues: dict = {}
+    script_es = 0
+    reportfile_path = ""
+    log_destination_location = ""
+    report_issues = {}
 
     if SCRIPT_MODE not in ("ANALYSIS", "CONVERSION"):
         print("SCRIPT_MODE envar is not one of the expected, got: {}".format(SCRIPT_MODE))
@@ -116,8 +123,9 @@ def main():
         log_destination_location = C2R_CONVERT_JSON_LOG_LOCATION
 
     # Parse arguments
-    parsed_opts = parse_arguments(sys.argv[1:])
-    if not parsed_opts.els:
+    parsed_opts = parse_arguments(sys.argv[2:])
+    
+    if not parsed_opts.els and SCRIPT_MODE == "ANALYSIS":
         report_issues["els"] = "els" 
 
     # Decide what to do based on existence of a specific file.
