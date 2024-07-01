@@ -1,1 +1,340 @@
-{"status": "INFO", "actions": {"EUS_SYSTEM_CHECK": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "TAINTED_KMODS": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "REMOVE_IWLAX2XX_FIRMWARE": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "VALIDATE_PACKAGE_MANAGER_TRANSACTION": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "PACKAGE_UPDATES": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "PRE_SUBSCRIPTION": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "INSTALL_RED_HAT_GPG_KEY": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "REMOVE_EXCLUDED_PACKAGES": {"messages": [{"description": "We have identified installed packages that match a pre-defined list of packages that are to be removed during the conversion", "remediations": "", "level": "INFO", "variables": {}, "title": "Excluded packages to be removed", "diagnosis": "The following packages will be removed during the conversion: geoipupdate-2.5.0-2.el7.x86_64", "id": "EXCLUDED_PACKAGES_REMOVED"}], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "SUBSCRIBE_SYSTEM": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "BACKUP_PACKAGE_FILES": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "CUSTOM_REPOSITORIES_ARE_VALID": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "DUPLICATE_PACKAGES": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "INSTALL_RED_HAT_CERT_FOR_YUM": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "READ_ONLY_MOUNTS_MNT": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "BACKUP_REDHAT_RELEASE": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "RHEL_COMPATIBLE_KERNEL": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "READ_ONLY_MOUNTS_SYS": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "BACKUP_YUM_VARIABLES": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "EFI": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "LIST_THIRD_PARTY_PACKAGES": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "BACKUP_REPOSITORY": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "DBUS_IS_RUNNING": {"messages": [{"description": "Did not perform the check because we have been asked not to subscribe this system to RHSM.", "remediations": "", "level": "INFO", "variables": {}, "title": "Did not perform the dbus is running check", "diagnosis": "", "id": "DBUS_IS_RUNNING_CHECK_SKIP"}], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "IS_LOADED_KERNEL_LATEST": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "REMOVE_REPOSITORY_FILES_PACKAGES": {"messages": [{"description": "We have identified installed packages that match a pre-defined list of packages that are to be removed during the conversion", "remediations": "", "level": "INFO", "variables": {}, "title": "Repository file packages to be removed", "diagnosis": "The following packages will be removed during the conversion: centos-release-7-9.2009.1.el7.centos.x86_64", "id": "REPOSITORY_FILE_PACKAGES_REMOVED"}], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "ENSURE_KERNEL_MODULES_COMPATIBILITY": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "CHECK_FIREWALLD_AVAILABILITY": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}, "CONVERT2RHEL_LATEST_VERSION": {"messages": [], "result": {"description": "", "remediations": "", "level": "SUCCESS", "variables": {}, "title": "", "diagnosis": "", "id": "SUCCESS"}}}, "format_version": "1.1"}
+{
+    "status": "INFO",
+    "actions": {
+        "EUS_SYSTEM_CHECK": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "TAINTED_KMODS": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "REMOVE_IWLAX2XX_FIRMWARE": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "VALIDATE_PACKAGE_MANAGER_TRANSACTION": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "PACKAGE_UPDATES": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "ELS_SYSTEM_CHECK": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "PRE_SUBSCRIPTION": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "INSTALL_RED_HAT_GPG_KEY": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "LIST_THIRD_PARTY_PACKAGES": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "BACKUP_PACKAGE_FILES": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "CUSTOM_REPOSITORIES_ARE_VALID": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "DUPLICATE_PACKAGES": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "INSTALL_RED_HAT_CERT_FOR_YUM": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "BACKUP_REPOSITORY": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "BACKUP_REDHAT_RELEASE": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "RHEL_COMPATIBLE_KERNEL": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "READ_ONLY_MOUNTS_SYS": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "BACKUP_YUM_VARIABLES": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "EFI": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "REMOVE_SPECIAL_PACKAGES": {
+            "messages": [
+                {
+                    "description": "We have identified installed packages that match a pre-defined list of packages that are to be removed during the conversion",
+                    "remediations": "",
+                    "level": "INFO",
+                    "variables": {},
+                    "title": "Special packages to be removed",
+                    "diagnosis": "The following packages will be removed during the conversion: geoipupdate-2.5.0-2.el7.x86_64, centos-release-7-9.2009.2.el7.centos.x86_64",
+                    "id": "SPECIAL_PACKAGES_REMOVED"
+                }
+            ],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "SUBSCRIBE_SYSTEM": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "READ_ONLY_MOUNTS_MNT": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "DBUS_IS_RUNNING": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "IS_LOADED_KERNEL_LATEST": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "ENSURE_KERNEL_MODULES_COMPATIBILITY": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "CHECK_FIREWALLD_AVAILABILITY": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        },
+        "CONVERT2RHEL_LATEST_VERSION": {
+            "messages": [],
+            "result": {
+                "description": "",
+                "remediations": "",
+                "level": "SUCCESS",
+                "variables": {},
+                "title": "",
+                "diagnosis": "",
+                "id": "SUCCESS"
+            }
+        }
+    },
+    "format_version": "1.1"
+}
