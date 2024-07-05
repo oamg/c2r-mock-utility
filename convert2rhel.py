@@ -45,6 +45,10 @@ def parse_arguments(args):
         "--els",
         action='store_true'
     )
+    parser.add_argument(
+        "--enablerepo",
+        action="append",
+    )
 
     # Parse arguments
     return parser.parse_args(args)
