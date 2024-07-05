@@ -52,8 +52,10 @@ def parse_arguments(args):
 
 def create_log_folder():
     """Create a c2r log folder if does not exists"""
-    if not os.path.exists(C2R_LOG_FOLDER):
-        os.makedirs(C2R_LOG_FOLDER)
+    os.makedirs(
+        name=C2R_LOG_FOLDER,
+        exist_ok=True
+    )
 
 
 def create_report(reportfile, log_destination_location):
@@ -74,7 +76,7 @@ def create_report(reportfile, log_destination_location):
     base reportfile located in :reportfile_path
 
     :param reportfile_path: Path to the base reportfile
-    :param path_issues: Dict with the paths to the reportfiles to add
+    :param report_issues: Dict with the paths to the reportfiles to add
                         Dict has to be str -> str.
 '''
 def craft_report(reportfile_path, report_issues):
@@ -126,7 +128,11 @@ def main():
     parsed_opts = parse_arguments(sys.argv[2:])
     
     if not parsed_opts.els and SCRIPT_MODE == "ANALYSIS":
-        report_issues["els"] = "els" 
+        report_issues["els"] = "els"
+    
+    if not parsed_opts.y:
+        print("Missing parameter: \"-y\".")
+        sys.exit(10)
 
     # Decide what to do based on existence of a specific file.
     # This serves as a communication with a running test.
