@@ -56,10 +56,8 @@ def parse_arguments(args):
 
 def create_log_folder():
     """Create a c2r log folder if does not exists"""
-    os.makedirs(
-        name=C2R_LOG_FOLDER,
-        exist_ok=True
-    )
+    if not os.path.exists(C2R_LOG_FOLDER):
+        os.makedirs(C2R_LOG_FOLDER)
 
 
 def create_report(reportfile, log_destination_location):
