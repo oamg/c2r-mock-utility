@@ -49,10 +49,6 @@ def parse_arguments(args):
         "--enablerepo",
         action="append",
     )
-    parser.add_argument(
-        "analyze",
-        action='store_true',
-    )
 
     # Parse arguments
     return parser.parse_args(args)
@@ -131,7 +127,8 @@ def main():
         log_destination_location = C2R_CONVERT_JSON_LOG_LOCATION
 
     # Parse arguments
-    parsed_opts = parse_arguments(sys.argv[1:])
+    ARGUMENTS_START = 2 if SCRIPT_MODE == "ANALYSIS" else 1
+    parsed_opts = parse_arguments(sys.argv[ARGUMENTS_START:])
     
     if not parsed_opts.els and SCRIPT_MODE == "ANALYSIS":
         report_issues["els"] = "els"
