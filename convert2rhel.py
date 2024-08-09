@@ -129,10 +129,8 @@ def main():
     # Parse arguments
     ARGUMENTS_START = 2 if SCRIPT_MODE == "ANALYSIS" else 1
     parsed_opts = parse_arguments(sys.argv[ARGUMENTS_START:])
-    
     if not parsed_opts.els and SCRIPT_MODE == "ANALYSIS":
         report_issues["els"] = "els"
-    
     if not parsed_opts.y:
         print("Missing parameter: \"-y\".")
         sys.exit(10)
