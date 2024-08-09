@@ -60,7 +60,7 @@ def create_log_folder():
         os.makedirs(C2R_LOG_FOLDER)
 
 
-def create_report(reportfile, log_destination_location):
+def put_reportfile_to_expected_location(reportfile, log_destination_location):
     """
     Download and put the c2r report file in the log directory
     where the rhc-worker-script parse the result of the c2r run
@@ -78,8 +78,7 @@ def create_report(reportfile, log_destination_location):
     base reportfile located in :reportfile_path
 
     :param reportfile_path: Path to the base reportfile
-    :param report_issues: Dict with the paths to the reportfiles to add
-                        Dict has to be str -> str.
+    :param report_issues: Array with the report filename to be added
 '''
 def craft_report(reportfile_path, report_issues):
     BASE_REPORT_CRAFT_FOLDER = BASE_REPORT_DATA_FOLDER + "craft/"
@@ -91,13 +90,17 @@ def craft_report(reportfile_path, report_issues):
         reportfile = json.load(f)
 
     # Push all report_issues into base reportfile
-    for report_issue in report_issues.values():
+    for report_issue in report_issues:
         REPORT_CRAFT_FOLDER = BASE_REPORT_CRAFT_FOLDER + report_issue
 
-        with open(REPORT_CRAFT_FOLDER + ".json", mode="r") as f:
+        with open(REPORT_CRAFT_FOLDER, mode="r") as f:
             json_issue = json.load(f)
 
+        # The report need a summary status. The summary status is the most critical status between all
+        # the reported issues. The status importance order is given by REPORT_STATUS_ORDER,
+        # ordered from less to most important. 
         if REPORT_STATUS_ORDER.index(json_issue["status"]) > REPORT_STATUS_ORDER.index(reportfile["status"]):
+            # If this issue status is more critical than the saved one, save this one.
             reportfile["status"] = json_issue["status"]
 
         for action_key in json_issue["actions"].keys():
@@ -112,7 +115,7 @@ def main():
     script_es = 0
     reportfile_path = ""
     log_destination_location = ""
-    report_issues = {}
+    report_issues = []
 
     if SCRIPT_MODE not in ("ANALYSIS", "CONVERSION"):
         print("SCRIPT_MODE envar is not one of the expected, got: {}".format(SCRIPT_MODE))
@@ -130,7 +133,7 @@ def main():
     ARGUMENTS_START = 2 if SCRIPT_MODE == "ANALYSIS" else 1
     parsed_opts = parse_arguments(sys.argv[ARGUMENTS_START:])
     if not parsed_opts.els and SCRIPT_MODE == "ANALYSIS":
-        report_issues["els"] = "els"
+        report_issues.append("els.json")
     if not parsed_opts.y:
         print("Missing parameter: \"-y\".")
         sys.exit(10)
@@ -149,7 +152,7 @@ def main():
                 f.write(time.ctime() + "\n")
 
     elif os.path.isfile(MOCK_KMOD_INHIBITOR):
-        report_issues["KMOD"] = "kmod"
+        report_issues.append("kmod.json")
 
         if SCRIPT_MODE == "CONVERSION":
             script_es = 1
@@ -183,7 +186,7 @@ def main():
         sys.exit(10)
 
     reportfile = craft_report(reportfile_path, report_issues)
-    create_report(reportfile, log_destination_location)
+    put_reportfile_to_expected_location(reportfile, log_destination_location)
 
     sys.exit(script_es)
 
