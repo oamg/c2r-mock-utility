@@ -1,0 +1,29 @@
+{
+    "status": "OVERRIDABLE",
+    "actions": {
+        "VALIDATE_PACKAGE_MANAGER_TRANSACTION": {
+            "messages": [],
+            "result": {
+                "description": "This action was skipped due to another action failing.",
+                "remediations": "Please ensure that the ENSURE_KERNEL_MODULES_COMPATIBILITY check passes so that this Action can evaluate your system",
+                "level": "SKIP",
+                "variables": {},
+                "title": "Skipped action",
+                "diagnosis": "Skipped because ENSURE_KERNEL_MODULES_COMPATIBILITY was not successful",
+                "id": "SKIP"
+            }
+        },
+        "ENSURE_KERNEL_MODULES_COMPATIBILITY": {
+            "messages": [],
+            "result": {
+                "description": "Unsupported kernel modules were found",
+                "remediations": "Ensure you have updated the kernel to the latest available version and rebooted the system.\nIf this message persists, you can prevent the modules from loading by following https://access.redhat.com/solutions/41278 and rerun convert2rhel.\nKeeping them loaded could cause the system to malfunction after the conversion as they might not work properly with the RHEL kernel.\nTo circumvent this check and accept the risk you can set environment variable 'CONVERT2RHEL_ALLOW_UNAVAILABLE_KMODS=1'.",
+                "level": "OVERRIDABLE",
+                "variables": {},
+                "title": "Unsupported kernel modules",
+                "diagnosis": "The following loaded kernel modules are not available in RHEL:\n/lib/modules/3.10.0-1160.114.2.el7.x86_64/kernel/drivers/net/bonding/custom_module_location/bonding.ko.xz\n",
+                "id": "UNSUPPORTED_KERNEL_MODULES"
+            }
+        }
+    }
+}
