@@ -52,7 +52,7 @@ def parse_arguments(args):
 
     # Parse arguments
     parsed_arguments = parser.parse_args(args)
-    os.environ.update(parsed_arguments)
+    os.environ.update(vars(parsed_arguments))
     return parsed_arguments
 
 
