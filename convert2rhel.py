@@ -52,7 +52,9 @@ def parse_arguments(args):
 
     # Parse arguments
     parsed_arguments = parser.parse_args(args)
-    os.environ.update(vars(parsed_arguments))
+    parsed_arguments_dict = vars(parsed_arguments)
+    for key, value in parsed_arguments_dict.items():
+        os.environ[key] = str(value)
     return parsed_arguments
 
 
