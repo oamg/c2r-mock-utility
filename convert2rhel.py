@@ -51,7 +51,9 @@ def parse_arguments(args):
     )
 
     # Parse arguments
-    return parser.parse_args(args)
+    parsed_arguments = parser.parse_args(args)
+    os.environ.update(parsed_arguments)
+    return parsed_arguments
 
 
 def create_log_folder():
