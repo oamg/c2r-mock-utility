@@ -141,6 +141,10 @@ def main():
     # Decide what to do based on existence of a specific file.
     # This serves as a communication with a running test.
     if os.path.isfile(MOCK_DUMP_ENV_VARS):
+        parsed_arguments_dict = vars(parsed_opts)
+        for key, value in parsed_arguments_dict.items():
+            os.environ[key] = str(value)
+
         with open(MOCK_OUTPUT_FILE, mode="w") as f:
             json.dump(dict(os.environ), f)
 
